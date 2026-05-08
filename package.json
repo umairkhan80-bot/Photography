@@ -1,0 +1,20 @@
+{
+  "name": "photography",
+  "version": "1.0.0",
+  "description": "LensCraft Photography Website with Vercel Web Analytics",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python3 -m http.server 8000 || python -m SimpleHTTPServer 8000",
+    "lint": "echo 'No linter configured for static HTML'",
+    "test": "echo 'No tests configured'"
+  },
+  "keywords": [
+    "photography",
+    "static-site",
+    "vercel-analytics"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {}
+}
