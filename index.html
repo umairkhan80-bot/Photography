@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base target="_self">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LensCraft | Photography Articles</title>
+    <meta name="description" content="Professional photography articles, tutorials, and location-based photo stories">
+    <meta name="keywords" content="photography, articles, tutorials, travel photography, landscape, portraits">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'photo-dark': '#1a1a1a',
+                        'photo-gray': '#2d2d2d',
+                        'photo-light': '#f8f8f8',
+                        'photo-accent': '#e63946',
+                        'photo-secondary': '#457b9d'
+                    },
+                    fontFamily: {
+                        'serif': ['Georgia', 'serif'],
+                        'sans': ['Inter', 'system-ui', 'sans-serif']
+                    },
+                    spacing: {
+                        '128': '32rem',
+                        '144': '36rem'
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .article-content p {
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+        .photo-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .photo-card:hover {
+            transform: translateY(-5px);
+        }
+        .page-transition {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s ease forwards;
+        }
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-white text-gray-800">
+    <!-- Navigation -->
+    <header class="sticky top-0 z-50 bg-white shadow-sm">
+        <nav class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <a href="#" data-page="home" class="text-2xl font-bold text-photo-dark hover:text-photo-accent transition-colors">
+                    <i class="fas fa-camera mr-2"></i>LensCraft
+                </a>
+                <ul id="nav-list" class="hidden md:flex space-x-8"></ul>
+                <button id="mobile-menu-btn" class="md:hidden text-photo-dark">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+            <div id="mobile-menu" class="md:hidden mt-4 hidden">
+                <ul id="mobile-nav-list" class="space-y-4"></ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main id="content" class="page-transition">
+        <!-- Home Page (Default) -->
+        <div id="home-page" class="page-content">
+            <!-- Hero Section -->
+            <section class="bg-photo-dark text-white py-20">
+                <div class="container mx-auto px-4 text-center">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-6">Capturing Moments, Telling Stories</h1>
+                    <p class="text-xl mb-8 max-w-2xl mx-auto">Professional photography articles, location guides, and in-depth tutorials for passionate photographers</p>
+                    <a href="#" data-page="gallery" class="inline-block bg-photo-accent hover:bg-red-600 text-white font-semibold py-3 px-8 rounded-lg transition-colors">
+                        Explore Gallery <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Featured Articles -->
+            <section class="py-16">
+                <div class="container mx-auto px-4">
+                    <h2 class="text-3xl font-bold mb-12 text-center text-photo-dark">Featured Articles</h2>
+                    <div id="featured-articles" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+                </div>
+            </section>
+
+            <!-- Photography Tips -->
+            <section class="bg-photo-light py-16">
+                <div class="container mx-auto px-4">
+                    <h2 class="text-3xl font-bold mb-12 text-center text-photo-dark">Weekly Photography Tips</h2>
+                    <div id="tips-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8"></div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Gallery Page -->
+        <div id="gallery-page" class="page-content hidden">
+            <section class="py-16">
+                <div class="container mx-auto px-4">
+                    <h1 class="text-4xl font-bold mb-2 text-photo-dark">Photo Gallery</h1>
+                    <p class="text-gray-600 mb-12">Explore our collection of stunning photographs from around the world</p>
+                    
+                    <!-- Filter Buttons -->
+                    <div class="flex flex-wrap gap-3 mb-12">
+                        <button class="filter-btn active px-4 py-2 rounded-full bg-photo-accent text-white" data-filter="all">All Photos</button>
+                        <button class="filter-btn px-4 py-2 rounded-full bg-gray-200 hover:bg-gray-300" data-filter="landscape">Landscape</button>
+                        <button class="filter-btn px-4 py-2 rounded-full bg-gray-200 hover:bg-gray-300" data-filter="portrait">Portrait</button>
+                        <button class="filter-btn px-4 py-2 rounded-full bg-gray-200 hover:bg-gray-300" data-filter="street">Street</button>
+                        <button class="filter-btn px-4 py-2 rounded-full bg-gray-200 hover:bg-gray-300" data-filter="wildlife">Wildlife</button>
+                    </div>
+
+                    <!-- Gallery Grid -->
+                    <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+                </div>
+            </section>
+        </div>
+
+        <!-- About Page -->
+        <div id="about-page" class="page-content hidden">
+            <section class="py-16">
+                <div class="container mx-auto px-4">
+                    <div class="max-w-4xl mx-auto">
+                        <h1 class="text-4xl font-bold mb-8 text-photo-dark">About LensCraft</h1>
+                        
+                        <div class="flex flex-col md:flex-row gap-12 items-center mb-16">
+                            <div class="md:w-1/3">
+                                <img src="https://picsum.photos/400?random=100" alt="Photographer portrait" class="rounded-full w-64 h-64 object-cover mx-auto shadow-lg">
+                            </div>
+                            <div class="md:w-2/3">
+                                <h2 class="text-2xl font-bold mb-4 text-photo-dark">Our Story</h2>
+                                <div class="article-content">
+                                    <p>Founded in 2015, LensCraft began as a passion project between three photographers who wanted to share their knowledge and experiences with the world. What started as a simple blog has grown into a comprehensive resource for photographers of all skill levels.</p>
+                                    <p>Our mission is to inspire creativity, provide valuable educational content, and build a community where photographers can learn, share, and grow together.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Team Members -->
+                        <h2 class="text-3xl font-bold mb-12 text-center text-photo-dark">Meet Our Team</h2>
+                        <div id="team-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16"></div>
+
+                        <!-- Photography Philosophy -->
+                        <div class="bg-photo-light rounded-2xl p-8 mb-16">
+                            <h2 class="text-2xl font-bold mb-6 text-photo-dark">Our Photography Philosophy</h2>
+                            <div class="article-content">
+                                <p>We believe that photography is more than just capturing images—it's about telling stories, preserving memories, and seeing the world through a unique perspective. Every photograph has a story behind it, from the location where it was taken to the technical decisions made by the photographer.</p>
+                                <p>Our articles focus on three key aspects: the technical (camera settings, equipment), the artistic (composition, lighting), and the experiential (location, story, emotion). We provide detailed location information because we believe context matters—understanding where and why a photo was taken adds depth to the image.</p>
+                            </div>
+                        </div>
+
+                        <!-- Contact Info -->
+                        <div class="border-t pt-12">
+                            <h2 class="text-2xl font-bold mb-8 text-photo-dark">Get In Touch</h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div>
+                                    <h3 class="text-xl font-semibold mb-4">Contact Information</h3>
+                                    <ul class="space-y-3">
+                                        <li class="flex items-center">
+                                            <i class="fas fa-envelope text-photo-accent mr-3"></i>
+                                            <span>contact@lenscraft.com</span>
+                                        </li>
+                                        <li class="flex items-center">
+                                            <i class="fas fa-phone text-photo-accent mr-3"></i>
+                                            <span>+1 (555) 123-4567</span>
+                                        </li>
+                                        <li class="flex items-center">
+                                            <i class="fas fa-map-marker-alt text-photo-accent mr-3"></i>
+                                            <span>123 Photography St, New York, NY 10001</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-semibold mb-4">Follow Us</h3>
+                                    <div class="flex space-x-4">
+                                        <a href="#" class="text-gray-600 hover:text-photo-accent text-2xl">
+                                            <i class="fab fa-instagram"></i>
+                                        </a>
+                                        <a href="#" class="text-gray-600 hover:text-photo-accent text-2xl">
+                                            <i class="fab fa-twitter"></i>
+                                        </a>
+                                        <a href="#" class="text-gray-600 hover:text-photo-accent text-2xl">
+                                            <i class="fab fa-youtube"></i>
+                                        </a>
+                                        <a href="#" class="text-gray-600 hover:text-photo-accent text-2xl">
+                                            <i class="fab fa-pinterest"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-photo-dark text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-2xl font-bold mb-4">LensCraft</h3>
+                    <p class="text-gray-400">Professional photography articles and tutorials for passionate photographers worldwide.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul id="footer-links-1" class="space-y-2"></ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Categories</h4>
+                    <ul id="footer-links-2" class="space-y-2"></ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Newsletter</h4>
+                    <p class="text-gray-400 mb-4">Subscribe for weekly photography tips</p>
+                    <div class="flex">
+                        <input type="email" placeholder="Your email" class="flex-grow px-4 py-2 rounded-l-lg text-gray-800">
+                        <button class="bg-photo-accent hover:bg-red-600 px-4 py-2 rounded-r-lg transition-colors">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 LensCraft. All rights reserved. | <a href="#" class="hover:text-white">Privacy Policy</a> | <a href="#" class="hover:text-white">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Photo Modal -->
+    <div id="photo-modal" class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+            <div class="flex justify-between items-center p-6 border-b">
+                <h3 id="modal-title" class="text-2xl font-bold text-photo-dark"></h3>
+                <button id="close-modal" class="text-gray-500 hover:text-gray-700 text-2xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-6 overflow-y-auto max-h-[70vh]">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <img id="modal-image" src="" alt="" class="w-full h-auto rounded-lg shadow-lg">
+                    </div>
+                    <div>
+                        <div id="modal-content" class="article-content"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== DATA LAYER ====================
+        const navigationItems = [
+            { "label": "Home", "href": "#", "page": "home", "icon": "fas fa-home" },
+            { "label": "Gallery", "href": "#", "page": "gallery", "icon": "fas fa-images" },
+            { "label": "Articles", "href": "#", "page": "home", "icon": "fas fa-newspaper" },
+            { "label": "Tutorials", "href": "#", "page": "home", "icon": "fas fa-graduation-cap" },
+            { "label": "About", "href": "#", "page": "about", "icon": "fas fa-info-circle" }
+        ];
+
+        const featuredArticles = [
+            {
+                "id": 1,
+                "title": "Mastering Long Exposure Photography",
+                "excerpt": "Learn how to capture stunning long exposure shots of waterfalls, city lights, and star trails with our comprehensive guide.",
+                "image": "https://picsum.photos/600/400?random=1",
+                "alt": "Long exposure waterfall photography",
+                "category": "Tutorial",
+                "readTime": "8 min read",
+                "date": "March 15, 2024"
+            },
+            {
+                "id": 2,
+                "title": "Iceland's Hidden Waterfalls",
+                "excerpt": "A photographic journey through Iceland's lesser-known waterfalls, with detailed location information and best shooting times.",
+                "image": "https://picsum.photos/600/400?random=2",
+                "alt": "Iceland waterfall landscape",
+                "category": "Travel",
+                "readTime": "12 min read",
+                "date": "March 10, 2024"
+            },
+            {
+                "id": 3,
+                "title": "Portrait Lighting Techniques",
+                "excerpt": "From Rembrandt to butterfly lighting - master classic portrait lighting setups for stunning results.",
+                "image": "https://picsum.photos/600/400?random=3",
+                "alt": "Portrait lighting setup",
+                "category": "Portrait",
+                "readTime": "10 min read",
+                "date": "March 5, 2024"
+            }
+        ];
+
+        const photographyTips = [
+            {
+                "title": "Golden Hour Magic",
+                "content": "Shoot during golden hour (first hour after sunrise, last hour before sunset) for soft, warm, directional light that adds depth and dimension to your photos.",
+                "icon": "fas fa-sun"
+            },
+            {
+                "title": "Rule of Thirds",
+                "content": "Place your subject along the grid lines or at their intersections to create more balanced and engaging compositions.",
+                "icon": "fas fa-th"
+            },
+            {
+                "title": "Leading Lines",
+                "content": "Use natural or man-made lines to guide the viewer's eye through your photograph and toward your main subject.",
+                "icon": "fas fa-road"
+            },
+            {
+                "title": "Depth of Field",
+                "content": "Control your aperture to create shallow depth of field for portraits (f/1.8-f/4) or deep depth of field for landscapes (f/8-f/16).",
+                "icon": "fas fa-camera"
+            }
+        ];
+
+        const galleryPhotos = [
+            {
+                "id": 1,
+                "title": "Mountain Sunrise",
+                "location": "Rocky Mountains, Colorado, USA",
+                "description": "Captured at 5:30 AM during autumn. The mist was rising from the valley as the first light hit the peaks. Shot with a 24-70mm lens at f/11, ISO 100, 1/60s.",
+                "image": "https://picsum.photos/800/600?random=4",
+                "alt": "Sunrise over Rocky Mountains",
+                "category": "landscape",
+                "camera": "Sony A7R IV",
+                "lens": "24-70mm f/2.8",
+                "settings": "f/11, 1/60s, ISO 100",
+                "coordinates": "39.7392° N, 104.9903° W"
+            },
+            {
+                "id": 2,
+                "title": "Urban Portrait",
+                "location": "Brooklyn, New York City, USA",
+                "description": "Street portrait taken during golden hour. The warm light created beautiful catchlights in the subject's eyes. Natural light only, with a reflector for fill.",
+                "image": "https://picsum.photos/800/600?random=5",
+                "alt": "Urban portrait in Brooklyn",
+                "category": "portrait",
+                "camera": "Canon EOS R5",
+                "lens": "85mm f/1.4",
+                "settings": "f/2.8, 1/250s, ISO 200",
+                "coordinates": "40.6782° N, 73.9442° W"
+            },
+            {
+                "id": 3,
+                "title": "Tokyo Nights",
+                "location": "Shibuya Crossing, Tokyo, Japan",
+                "description": "Long exposure of the famous Shibuya Crossing. The streaks of light are from moving vehicles and pedestrians. Tripod-mounted with ND filter.",
+                "image": "https://picsum.photos/800/600?random=6",
+                "alt": "Shibuya Crossing long exposure",
+                "category": "street",
+                "camera": "Nikon Z7 II",
+                "lens": "16-35mm f/4",
+                "settings": "f/8, 15s, ISO 100",
+                "coordinates": "35.6595° N, 139.7004° E"
+            },
+            {
+                "id": 4,
+                "title": "African Safari",
+                "location": "Masai Mara, Kenya",
+                "description": "Lioness resting in the golden grass during late afternoon. Shot from a safari vehicle with a telephoto lens to maintain safe distance.",
+                "image": "https://picsum.photos/800/600?random=7",
+                "alt": "Lioness in Masai Mara",
+                "category": "wildlife",
+                "camera": "Sony A1",
+                "lens": "200-600mm f/5.6-6.3",
+                "settings": "f/6.3, 1/1000s, ISO 800",
+                "coordinates": "1.4091° S, 35.1115° E"
+            },
+            {
+                "id": 5,
+                "title": "Norwegian Fjords",
+                "location": "Geirangerfjord, Norway",
+                "description": "Aerial view of the majestic Geirangerfjord captured from a helicopter. The deep blue water contrasts with the green mountainsides.",
+                "image": "https://picsum.photos/800/600?random=8",
+                "alt": "Aerial view of Geirangerfjord",
+                "category": "landscape",
+                "camera": "DJI Mavic 3",
+                "lens": "24mm equivalent",
+                "settings": "f/2.8, 1/800s, ISO 100",
+                "coordinates": "62.1014° N, 7.2061° E"
+            },
+            {
+                "id": 6,
+                "title": "Market Life",
+                "location": "Marrakech, Morocco",
+                "description": "Vendor at the Jemaa el-Fnaa market preparing spices. The vibrant colors and textures tell a story of traditional Moroccan culture.",
+                "image": "https://picsum.photos/800/600?random=9",
+                "alt": "Spice vendor in Marrakech",
+                "category": "street",
+                "camera": "Fujifilm X-T4",
+                "lens": "35mm f/1.4",
+                "settings": "f/2.8, 1/125s, ISO 400",
+                "coordinates": "31.6258° N, 7.9892° W"
+            },
+
+              {
+                "id": 7,
+                "title": "Nture",
+                "location": "Islamabad, Pakistan",
+                "description": "This appears to be a Hydrangea macrophylla, a species of flowering plant commonly known as Bigleaf Hydrangea.",
+                "image": "vitalik-Skx_cS0BOt4-unsplash.jpg",
+                "alt": "Flower",
+                "category": "portrait",
+                "camera": "Fujifilm X-T4",
+                "lens": "35mm f/1.4",
+                "settings": "f/2.8, 1/125s, ISO 400",
+                "coordinates": "31.6258° N, 7.9892° W"
+            },
+
+              {
+                "id": 8,
+                "title": "Flower",
+                "location": "Islamabad, Pakistan",
+                "description": "The scene depicted features vibrant wildflowers, possibly cosmos or coreopsis, often found in meadow environments",
+                "image": "lee-DK7msqOZ9fI-unsplash.jpg",
+                "alt": "Flower",
+                "category": "landscape",
+                "camera": "Fujifilm X-T4",
+                "lens": "35mm f/1.4",
+                "settings": "f/2.8, 1/125s, ISO 400",
+                "coordinates": "31.6258° N, 7.9892° W"
+            }
+        ];
+
+        const teamMembers = [
+            {
+                "name": "Umair Khan",
+                "role": "Landscape Photographer",
+                "bio": "Specializes in mountain and coastal landscapes. Has published two photography books and leads workshops worldwide.",
+                "image": "https://picsum.photos/300/300?random=10",
+                "alt": "Sarah Chen portrait",
+                "experience": "12 years"
+            },
+          
+        ];
+
+        const footerLinks1 = [
+            { "label": "Home", "href": "#", "page": "home" },
+            { "label": "Gallery", "href": "#", "page": "gallery" },
+            { "label": "About Us", "href": "#", "page": "about" },
+            { "label": "Contact", "href": "#", "page": "about" }
+        ];
+
+        const footerLinks2 = [
+            { "label": "Landscape Photography", "href": "#", "filter": "landscape" },
+            { "label": "Portrait Photography", "href": "#", "filter": "portrait" },
+            { "label": "Street Photography", "href": "#", "filter": "street" },
+            { "label": "Wildlife Photography", "href": "#", "filter": "wildlife" }
+        ];
+
+        // ==================== RENDER FUNCTIONS ====================
+        function renderNavigation(items) {
+            return items.map(item => 
+                `<li>
+                    <a href="${item.href}" data-page="${item.page}" class="flex items-center text-gray-700 hover:text-photo-accent transition-colors">
+                        <i class="${item.icon} mr-2"></i>${item.label}
+                    </a>
+                </li>`
+            ).join("");
+        }
+
+        function renderFeaturedArticles(articles) {
+            return articles.map(article =>
+                `<article class="photo-card bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl">
+                    <img src="${article.image}" alt="${article.alt}" class="w-full h-64 object-cover" loading="lazy">
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="px-3 py-1 bg-photo-accent text-white text-sm rounded-full">${article.category}</span>
+                            <span class="text-gray-500 text-sm">${article.readTime}</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-photo-dark">${article.title}</h3>
+                        <p class="text-gray-600 mb-4">${article.excerpt}</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-500 text-sm">${article.date}</span>
+                            <a href="#" class="text-photo-accent hover:text-red-600 font-semibold">
+                                Read More <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </article>`
+            ).join("");
+        }
+
+        function renderPhotographyTips(tips) {
+            return tips.map(tip =>
+                `<div class="bg-white p-6 rounded-xl shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-photo-accent rounded-full flex items-center justify-center mr-4">
+                            <i class="${tip.icon} text-white text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-photo-dark">${tip.title}</h3>
+                    </div>
+                    <p class="text-gray-600">${tip.content}</p>
+                </div>`
+            ).join("");
+        }
+
+        function renderGalleryPhotos(photos) {
+            return photos.map(photo =>
+                `<div class="photo-card bg-white rounded-xl shadow-lg overflow-hidden" data-category="${photo.category}">
+                    <div class="relative overflow-hidden group">
+                        <img src="${photo.image}" alt="${photo.alt}" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy">
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-300 flex items-center justify-center">
+                            <button class="view-photo-btn opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 bg-white text-photo-dark px-6 py-3 rounded-lg font-semibold" data-id="${photo.id}">
+                                <i class="fas fa-expand mr-2"></i>View Details
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2 text-photo-dark">${photo.title}</h3>
+                        <div class="flex items-center text-gray-600 mb-3">
+                            <i class="fas fa-map-marker-alt mr-2 text-photo-accent"></i>
+                            <span>${photo.location}</span>
+                        </div>
+                        <p class="text-gray-600 mb-4 line-clamp-2">${photo.description}</p>
+                        <div class="flex justify-between items-center">
+                            <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">${photo.category}</span>
+                            <span class="text-gray-500 text-sm">${photo.camera}</span>
+                        </div>
+                    </div>
+                </div>`
+            ).join("");
+        }
+
+        function renderTeamMembers(members) {
+            return members.map(member =>
+                `<div class="text-center">
+                    <img src="${member.image}" alt="${member.alt}" class="w-48 h-48 object-cover rounded-full mx-auto mb-6 shadow-lg" loading="lazy">
+                    <h3 class="text-xl font-bold mb-2 text-photo-dark">${member.name}</h3>
+                    <p class="text-photo-accent font-semibold mb-3">${member.role}</p>
+                    <p class="text-gray-600 mb-3">${member.bio}</p>
+                    <div class="text-gray-500 text-sm">
+                        <i class="fas fa-clock mr-1"></i> ${member.experience} experience
+                    </div>
+                </div>`
+            ).join("");
+        }
+
+        function renderFooterLinks(items, listId) {
+            return items.map(item => 
+                `<li>
+                    <a href="${item.href}" ${item.page ? `data-page="${item.page}"` : ''} ${item.filter ? `data-filter="${item.filter}"` : ''} class="text-gray-400 hover:text-white transition-colors">
+                        ${item.label}
+                    </a>
+                </li>`
+            ).join("");
+        }
+
+        function renderPhotoModal(photo) {
+            return `
+                <div class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-1">Location Details</h4>
+                            <p class="text-gray-600">${photo.location}</p>
+                            <p class="text-gray-500 text-xs mt-1">Coordinates: ${photo.coordinates}</p>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-1">Camera Settings</h4>
+                            <p class="text-gray-600">${photo.settings}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-1">Equipment Used</h4>
+                            <p class="text-gray-600">Camera: ${photo.camera}</p>
+                            <p class="text-gray-600">Lens: ${photo.lens}</p>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-1">Category</h4>
+                            <span class="px-3 py-1 bg-photo-accent text-white text-sm rounded-full capitalize">${photo.category}</span>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="font-semibold text-gray-700 mb-2">Full Description</h4>
+                        <p class="text-gray-600">${photo.description}</p>
+                    </div>
+                    
+                    <div class="pt-4 border-t">
+                        <h4 class="font-semibold text-gray-700 mb-2">Photography Notes</h4>
+                        <p class="text-gray-600">This image was carefully planned and executed. The composition considers the rule of thirds, with attention to leading lines and natural framing. Post-processing was minimal, focusing on color correction and slight contrast adjustments to maintain the natural feel of the scene.</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ==================== PAGE MANAGEMENT ====================
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page-content').forEach(page => {
+                page.classList.add('hidden');
+            });
+            
+            // Show selected page
+            const targetPage = document.getElementById(`${pageId}-page`);
+            if (targetPage) {
+                targetPage.classList.remove('hidden');
+                
+                // Update page transition animation
+                targetPage.classList.remove('page-transition');
+                void targetPage.offsetWidth; // Trigger reflow
+                targetPage.classList.add('page-transition');
+                
+                // Update active nav
+                updateActiveNav(pageId);
+                
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function updateActiveNav(pageId) {
+            document.querySelectorAll('#nav-list a, #mobile-nav-list a').forEach(link => {
+                link.classList.remove('text-photo-accent', 'font-semibold');
+                link.classList.add('text-gray-700');
+                
+                if (link.getAttribute('data-page') === pageId) {
+                    link.classList.remove('text-gray-700');
+                    link.classList.add('text-photo-accent', 'font-semibold');
+                }
+            });
+        }
+
+        // ==================== INITIALIZATION ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Render navigation
+            document.getElementById('nav-list').innerHTML = renderNavigation(navigationItems);
+            document.getElementById('mobile-nav-list').innerHTML = renderNavigation(navigationItems);
+            
+            // Render featured articles
+            document.getElementById('featured-articles').innerHTML = renderFeaturedArticles(featuredArticles);
+            
+            // Render photography tips
+            document.getElementById('tips-grid').innerHTML = renderPhotographyTips(photographyTips);
+            
+            // Render gallery photos
+            document.getElementById('gallery-grid').innerHTML = renderGalleryPhotos(galleryPhotos);
+            
+            // Render team members
+            document.getElementById('team-grid').innerHTML = renderTeamMembers(teamMembers);
+            
+            // Render footer links
+            document.getElementById('footer-links-1').innerHTML = renderFooterLinks(footerLinks1, 'footer-1');
+            document.getElementById('footer-links-2').innerHTML = renderFooterLinks(footerLinks2, 'footer-2');
+            
+            // Set home as active page
+            updateActiveNav('home');
+            
+            // ==================== EVENT HANDLERS ====================
+            
+            // Navigation click handlers (delegated)
+            document.addEventListener('click', function(event) {
+                const link = event.target.closest('a[data-page]');
+                if (link) {
+                    event.preventDefault();
+                    const page = link.getAttribute('data-page');
+                    showPage(page);
+                    
+                    // Close mobile menu if open
+                    document.getElementById('mobile-menu').classList.add('hidden');
+                }
+                
+                // Filter button clicks
+                const filterBtn = event.target.closest('.filter-btn');
+                if (filterBtn) {
+                    event.preventDefault();
+                    const filter = filterBtn.getAttribute('data-filter');
+                    
+                    // Update active filter button
+                    document.querySelectorAll('.filter-btn').forEach(btn => {
+                        btn.classList.remove('active', 'bg-photo-accent', 'text-white');
+                        btn.classList.add('bg-gray-200', 'text-gray-700');
+                    });
+                    filterBtn.classList.remove('bg-gray-200', 'text-gray-700');
+                    filterBtn.classList.add('active', 'bg-photo-accent', 'text-white');
+                    
+                    // Filter gallery photos
+                    const photos = document.querySelectorAll('.photo-card[data-category]');
+                    photos.forEach(photo => {
+                        if (filter === 'all' || photo.getAttribute('data-category') === filter) {
+                            photo.style.display = 'block';
+                        } else {
+                            photo.style.display = 'none';
+                        }
+                    });
+                }
+                
+                // Footer filter links
+                const footerFilter = event.target.closest('a[data-filter]');
+                if (footerFilter) {
+                    event.preventDefault();
+                    const filter = footerFilter.getAttribute('data-filter');
+                    showPage('gallery');
+                    
+                    // Trigger filter after a short delay to ensure page is loaded
+                    setTimeout(() => {
+                        const filterBtn = document.querySelector(`.filter-btn[data-filter="${filter}"]`);
+                        if (filterBtn) filterBtn.click();
+                    }, 100);
+                }
+            });
+            
+            // Mobile menu toggle
+            document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+                const menu = document.getElementById('mobile-menu');
+                menu.classList.toggle('hidden');
+            });
+            
+            // View photo details
+            document.addEventListener('click', function(event) {
+                const viewBtn = event.target.closest('.view-photo-btn');
+                if (viewBtn) {
+                    const photoId = parseInt(viewBtn.getAttribute('data-id'));
+                    const photo = galleryPhotos.find(p => p.id === photoId);
+                    
+                    if (photo) {
+                        document.getElementById('modal-title').textContent = photo.title;
+                        document.getElementById('modal-image').src = photo.image;
+                        document.getElementById('modal-image').alt = photo.alt;
+                        document.getElementById('modal-content').innerHTML = renderPhotoModal(photo);
+                        document.getElementById('photo-modal').classList.remove('hidden');
+                    }
+                }
+            });
+            
+            // Close modal
+            document.getElementById('close-modal').addEventListener('click', function() {
+                document.getElementById('photo-modal').classList.add('hidden');
+            });
+            
+            // Close modal on background click
+            document.getElementById('photo-modal').addEventListener('click', function(event) {
+                if (event.target === this) {
+                    this.classList.add('hidden');
+                }
+            });
+            
+            // Newsletter form submission
+            const newsletterBtn = document.querySelector('footer button.bg-photo-accent');
+            if (newsletterBtn) {
+                newsletterBtn.addEventListener('click', function() {
+                    const emailInput = this.previousElementSibling;
+                    if (emailInput.value && emailInput.value.includes('@')) {
+                        alert('Thank you for subscribing to our newsletter!');
+                        emailInput.value = '';
+                    } else {
+                        alert('Please enter a valid email address.');
+                    }
+                });
+            }
+            
+            // Smooth scroll for anchor links
+            document.addEventListener('click', function(event) {
+                const anchor = event.target.closest('a[href^="#"]:not([data-page])');
+                if (anchor && anchor.getAttribute('href') !== '#') {
+                    event.preventDefault();
+                    const targetId = anchor.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
